@@ -6,24 +6,29 @@ import { revalidatePath } from 'next/cache';
 
 export async function getAvisos() {
   return await prisma.aviso.findMany({
+    include: {
+      user: {
+        select: { nome: true, tipo: true },
+      },
+    },
     orderBy: { createdAt: 'desc' },
   });
 }
 
 export async function criarAviso(formData: FormData) {
-  // 1. Busca o usuário logado para obter o id
   const usuario = await getUsuarioLogado();
 
-  if (!usuario) {
-    throw new Error('Usuário não autenticado.');
+  if (!usuario || (usuario.tipo !== 'SINDICO' && usuario.tipo !== 'PORTARIA')) {
+    throw new Error('Apenas o Síndico ou Portaria podem publicar avisos.');
   }
 
   const titulo = formData.get('titulo') as string;
   const conteudo = formData.get('conteudo') as string;
 
-  if (!titulo || !conteudo) return;
+  if (!titulo || !conteudo) {
+    throw new Error('Título e conteúdo são obrigatórios.');
+  }
 
-  // 2. Salva o aviso relacionando com o userId obtido
   await prisma.aviso.create({
     data: {
       titulo,
@@ -34,4 +39,23 @@ export async function criarAviso(formData: FormData) {
 
   revalidatePath('/dashboard/avisos');
   revalidatePath('/dashboard');
+  revalidatePath('/dashboard/admin');
+  revalidatePath('/dashboard/admin/avisos');
+}
+
+export async function deletarAviso(avisoId: string) {
+  const usuario = await getUsuarioLogado();
+
+  if (!usuario || usuario.tipo !== 'SINDICO') {
+    throw new Error('Não autorizado');
+  }
+
+  await prisma.aviso.delete({
+    where: { id: avisoId },
+  });
+
+  revalidatePath('/dashboard/avisos');
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/admin');
+  revalidatePath('/dashboard/admin/avisos');
 }

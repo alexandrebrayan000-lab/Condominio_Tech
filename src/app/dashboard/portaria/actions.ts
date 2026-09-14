@@ -17,10 +17,16 @@ export async function getReservasDoDia() {
       },
     },
     include: {
+      espaco: true,
       user: {
-        select: { nome: true, email: true },
+        select: {
+          nome: true,
+          email: true,
+          bloco: true,
+          apartamento: true,
+        },
       },
     },
-    orderBy: { dataFim: 'asc' },
+    orderBy: { dataInicio: 'asc' },
   });
 }
