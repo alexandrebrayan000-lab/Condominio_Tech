@@ -7,20 +7,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Espaco {
-  id          String    @id @default(uuid())
+enum Role {
+  MORADOR
+  SINDICO
+  PORTARIA
+}
+
+model User {
+  id          String    @id @default(cuid())
   nome        String
-  descricao   String
-  capacidade  Int
+  email       String    @unique
+  senha       String
+  tipo        Role      @default(MORADOR)
+  bloco       String
+  apartamento String
   reservas    Reserva[]
+  avisos      Aviso[]
+  chamados    Chamado[]
+  
   createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Espaco {
+  id         String    @id @default(cuid())
+  nome       String
+  descricao  String?
+  capacidade Int?
+  reservas   Reserva[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Reserva {
-  id          String   @id @default(uuid())
-  espacoId    String
-  espaco      Espaco   @relation(fields: [espacoId], references: [id])
-  nomeMorador String
-  data        DateTime
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  dataInicio DateTime
+  dataFim    DateTime
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  espacoId   String
+  espaco     Espaco   @relation(fields: [espacoId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Chamado {
+  id        String   @id @default(cuid())
+  titulo    String
+  descricao String
+  status    String   @default("PENDENTE") // PENDENTE, EM_ANALISE, CONCLUIDO
+  visto     Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Aviso {
+  id        String   @id @default(cuid())
+  titulo    String
+  conteudo  String
+  fixado    Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

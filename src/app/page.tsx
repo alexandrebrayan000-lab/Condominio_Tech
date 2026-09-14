@@ -1,21 +1,25 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950">
-      
+
       {/* Header / Navegação */}
       <header className="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center text-slate-950 font-bold text-lg shadow-lg shadow-cyan-500/20">
-              CT
-            </div>
-            <span className="font-bold text-xl tracking-tight text-white">
-              Condomínio<span className="text-cyan-400">Tech</span>
-            </span>
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="CondomínioTech Logo"
+              width={160}
+              height={40}
+              style={{ width: 'auto', height: '40px' }}
+              className="object-contain"
+              priority
+            />
           </div>
 
           <div className="flex items-center gap-3">
@@ -31,10 +35,6 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <main className="max-w-6xl mx-auto px-6 py-20 flex-1 flex flex-col justify-center items-center text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-medium mb-8">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-          A evolução na gestão de condomínios
-        </div>
 
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight max-w-3xl leading-tight">
           Tecnologia que conecta, <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">simplifica e transforma</span> a vida em condomínio.

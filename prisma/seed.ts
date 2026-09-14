@@ -3,34 +3,50 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.aviso.deleteMany();
+  await prisma.reserva.deleteMany();
   await prisma.espaco.deleteMany();
+
+  await prisma.user.upsert({
+    where: { email: 'sindico@condominio.com' },
+    update: { tipo: 'SINDICO' },
+    create: {
+      nome: 'Síndico Principal',
+      email: 'sindico@condominio.com',
+      senha: '123',
+      tipo: 'SINDICO',
+      bloco: 'ADM',
+      apartamento: '000',
+    },
+  });
+
+  await prisma.user.upsert({
+    where: { email: 'portaria@condominio.com' },
+    update: { tipo: 'PORTARIA' },
+    create: {
+      nome: 'Portaria Principal',
+      email: 'portaria@condominio.com',
+      senha: '123',
+      tipo: 'PORTARIA',
+      bloco: 'ADM',
+      apartamento: '000',
+    },
+  });
 
   await prisma.espaco.createMany({
     data: [
-      {
-        nome: 'Salão de Festas Principal',
-        descricao: 'Ambiente climatizado, com freezer, mesas, cadeiras e sistema de som integrado.',
-        capacidade: 50,
-      },
-      {
-        nome: 'Churrasqueira Gourmet',
-        descricao: 'Área coberta com churrasqueira a carvão, bancada em granito e utensílios básicos.',
-        capacidade: 15,
-      },
-      {
-        nome: 'Quadra Poliesportiva',
-        descricao: 'Quadra para futebol de salão, basquete e vôlei.',
-        capacidade: 20,
-      },
+      { nome: 'Salão de Festas', descricao: 'Espaço para até 50 pessoas', capacidade: 50 },
+      { nome: 'Churrasqueira', descricao: 'Área coberta com grelha', capacidade: 15 },
+      { nome: 'Quadra Poliesportiva', descricao: 'Quadra para jogos em geral', capacidade: 20 },
     ],
   });
 
-  console.log('Banco de dados semeado com sucesso!');
+  console.log('✅ Síndico, Portaria e Espaços criados com sucesso!');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('Erro ao rodar seed:', e);
     process.exit(1);
   })
   .finally(async () => {
