@@ -11,16 +11,22 @@ export async function getReservasDoDia() {
 
   return await prisma.reserva.findMany({
     where: {
-      data: {
+      dataInicio: {
         gte: hojeInicio,
         lte: hojeFim,
       },
     },
     include: {
+      espaco: true,
       user: {
-        select: { nome: true, email: true },
+        select: {
+          nome: true,
+          email: true,
+          bloco: true,
+          apartamento: true,
+        },
       },
     },
-    orderBy: { data: 'asc' },
+    orderBy: { dataInicio: 'asc' },
   });
 }

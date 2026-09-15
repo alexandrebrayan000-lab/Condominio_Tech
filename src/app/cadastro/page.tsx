@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -11,6 +12,8 @@ export default function CadastroPage() {
   const router = useRouter();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
+  const [bloco, setBloco] = useState('');
+  const [apartamento, setApartamento] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [error, setError] = useState('');
@@ -31,7 +34,7 @@ export default function CadastroPage() {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, email, senha }),
+        body: JSON.stringify({ nome, email, bloco, apartamento, senha }),
       });
 
       const data = await response.json();
@@ -40,7 +43,6 @@ export default function CadastroPage() {
         throw new Error(data.message || 'Erro ao realizar cadastro');
       }
 
-      // Redireciona para o login após cadastrar com sucesso
       router.push('/login');
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -56,15 +58,18 @@ export default function CadastroPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center px-4 py-12 selection:bg-cyan-500 selection:text-slate-950">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500 flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-              CT
-            </div>
-            <span className="font-bold text-2xl tracking-tight text-white">
-              Condomínio<span className="text-cyan-400">Tech</span>
-            </span>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <Link href="/" className="inline-block mb-4 hover:scale-105 transition-transform">
+            <Image
+              src="/logo.png"
+              alt="CondomínioTech Logo"
+              width={240}
+              height={80}
+              priority
+              className="h-16 w-auto object-contain"
+            />
           </Link>
+
           <h1 className="text-xl font-semibold text-white">Crie sua conta</h1>
           <p className="text-xs text-slate-400 mt-1">
             Preencha os dados abaixo para se cadastrar na plataforma
@@ -96,6 +101,24 @@ export default function CadastroPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
+            <div className="grid grid-cols-2 gap-4">
+              <Input 
+                label="Bloco"
+                type="text"
+                placeholder="Ex: Bloco A"
+                value={bloco}
+                onChange={(e) => setBloco(e.target.value)}
+              />
+
+              <Input 
+                label="Apartamento"
+                type="text"
+                placeholder="Ex: Apt 102"
+                value={apartamento}
+                onChange={(e) => setApartamento(e.target.value)}
+              />
+            </div>
 
             <Input 
               label="Senha"
@@ -129,7 +152,7 @@ export default function CadastroPage() {
             </span>
           </div>
 
-          <Link href="/login">
+          <Link href="/login" className="w-full">
             <Button variant="outline" className="w-full">
               Fazer Login
             </Button>

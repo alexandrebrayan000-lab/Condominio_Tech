@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { criarAviso } from '@/app/dashboard/avisos/actions';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminAvisosPage() {
   const usuario = await getUsuarioLogado();
 
@@ -19,7 +21,7 @@ export default async function AdminAvisosPage() {
         <p className="text-sm text-slate-400 mt-1">Crie avisos oficiais que aparecerão no mural de todos os moradores.</p>
       </div>
 
-      <Card className="p-6 max-w-2xl">
+      <Card className="p-6 max-w-2xl bg-slate-900/90 border-slate-800">
         <form action={criarAviso} className="flex flex-col gap-4">
           <Input label="Título do Aviso" name="titulo" type="text" placeholder="Ex: Manutenção no Elevador" required />
 
@@ -28,8 +30,8 @@ export default async function AdminAvisosPage() {
             <textarea 
               name="conteudo" 
               rows={5} 
-              className="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" 
-              placeholder="Digite os detalhes..." 
+              className="w-full bg-slate-800/80 border border-slate-700 rounded-lg p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500" 
+              placeholder="Digite os detalhes do comunicado oficial..." 
               required 
             />
           </div>

@@ -2,9 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function realizarLogin(formData: FormData) {
   const email = formData.get('email') as string;
@@ -33,5 +31,11 @@ export async function realizarLogin(formData: FormData) {
     sameSite: 'lax',
   });
 
-  redirect('/dashboard');
+  if (usuario.tipo === 'SINDICO') {
+    redirect('/dashboard/admin');
+  } else if (usuario.tipo === 'PORTARIA') {
+    redirect('/dashboard/portaria');
+  } else {
+    redirect('/dashboard');
+  }
 }
