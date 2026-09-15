@@ -122,7 +122,7 @@ export function DashboardLayoutClient({
           <div className="px-2">
             <p className="text-xs font-semibold text-white truncate">{userName}</p>
             <p className="text-[11px] text-slate-400">
-              {userBloco && userApto ? `B. ${userBloco} • Apt ${userApto}` : 'Condomínio Tech'}
+              {userBloco && userApto ? `Bloco. ${userBloco} • Apt ${userApto}` : 'Condomínio Tech'}
             </p>
           </div>
 
