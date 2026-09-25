@@ -24,8 +24,8 @@ export async function atualizarPerfil(formData: FormData) {
     where: { id: usuario.id },
     data: {
       nome,
-      bloco: bloco || null,
-      apartamento: apartamento || null,
+      bloco: bloco || usuario.bloco || '',
+      apartamento: apartamento || usuario.apartamento || '',
     },
   });
 

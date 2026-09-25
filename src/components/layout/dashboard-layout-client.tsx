@@ -68,7 +68,7 @@ export function DashboardLayoutClient({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/flaticon.ico"
+                src="/favicon.ico"
                 alt="Logo CondomínioTech"
                 className="w-7 h-7 rounded-lg object-contain drop-shadow-md group-hover:scale-105 transition-transform"
               />

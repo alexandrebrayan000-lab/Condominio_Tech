@@ -187,12 +187,7 @@ export default async function AdminDashboardPage() {
 
                   <div className="flex items-center gap-2 self-end sm:self-center">
                     {!item.visto ? (
-                      <form
-                        action={async () => {
-                          'use server';
-                          await marcarComoVisto(item.id);
-                        }}
-                      >
+                      <form action={marcarComoVisto.bind(null, item.id)}>
                         <button
                           type="submit"
                           className="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold px-3 py-1.5 rounded-lg transition cursor-pointer"
@@ -201,12 +196,7 @@ export default async function AdminDashboardPage() {
                         </button>
                       </form>
                     ) : item.status !== 'CONCLUIDO' ? (
-                      <form
-                        action={async () => {
-                          'use server';
-                          await atualizarStatusChamado(item.id, 'CONCLUIDO');
-                        }}
-                      >
+                      <form action={atualizarStatusChamado.bind(null, item.id, 'CONCLUIDO')}>
                         <button
                           type="submit"
                           className="bg-emerald-600/80 hover:bg-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition cursor-pointer"
